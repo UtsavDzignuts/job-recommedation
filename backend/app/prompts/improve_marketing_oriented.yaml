@@ -1,0 +1,19 @@
+name: improve_marketing_oriented
+description: Marketing mode improvement template. Rewrites a job description to be engaging and compelling with action verbs, highlighting growth opportunities and company culture. Includes SEO keywords.
+required_variables:
+  - job_description
+template: |
+  Rewrite the following job description with a marketing-oriented approach. Follow these guidelines:
+
+  - Use engaging, compelling language with strong action verbs.
+  - Highlight growth opportunities, career development, and company culture.
+  - Make the role sound exciting and attractive to top talent.
+  - Include relevant SEO keywords naturally throughout the text to improve search visibility.
+  - Emphasize what makes this opportunity unique and desirable.
+  - Use a persuasive tone that motivates candidates to apply.
+  - Keep the core requirements accurate while framing them positively.
+
+  Original Job Description:
+  {job_description}
+
+  Rewritten Job Description:

@@ -1,0 +1,14 @@
+name: rag_answer
+description: Template for RAG answer generation. Instructs the LLM to answer based only on the provided context documents.
+required_variables:
+  - query
+  - context_documents
+template: |
+  Based on the following context, answer the question. Only use information from the provided context. If the context does not contain enough information to answer the question, say so.
+
+  Context:
+  {context_documents}
+
+  Question: {query}
+
+  Answer:

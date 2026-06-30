@@ -1,0 +1,17 @@
+name: improve_short_and_crisp
+description: Short mode improvement template. Rewrites a job description to be concise, using bullet points and short sentences while keeping key requirements.
+required_variables:
+  - job_description
+template: |
+  Rewrite the following job description to be short and crisp. Follow these guidelines:
+
+  - Use bullet points for requirements and responsibilities.
+  - Keep sentences short and direct.
+  - Remove unnecessary filler words, jargon, and redundancy.
+  - Retain all key requirements, qualifications, and essential information.
+  - Aim for clarity and brevity above all else.
+
+  Original Job Description:
+  {job_description}
+
+  Rewritten Job Description:

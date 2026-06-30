@@ -1,0 +1,17 @@
+name: improve_detailed_and_formal
+description: Detailed mode improvement template. Rewrites a job description in a formal, comprehensive style with clear sections for responsibilities, requirements, and benefits.
+required_variables:
+  - job_description
+template: |
+  Rewrite the following job description in a formal, detailed, and comprehensive style. Follow these guidelines:
+
+  - Use professional and polished language throughout.
+  - Organize the content into clear sections: Role Overview, Key Responsibilities, Requirements and Qualifications, and Benefits.
+  - Expand on important details where appropriate to provide a thorough understanding of the role.
+  - Maintain a formal tone suitable for corporate communications.
+  - Ensure all original requirements and qualifications are preserved and clearly articulated.
+
+  Original Job Description:
+  {job_description}
+
+  Rewritten Job Description:
