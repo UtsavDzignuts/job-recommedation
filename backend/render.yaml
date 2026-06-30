@@ -1,0 +1,39 @@
+# Render Blueprint — defines all services for one-click deploy
+# https://render.com/docs/blueprint-spec
+
+services:
+  # FastAPI Backend
+  - type: web
+    name: kra-kpa-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    rootDir: backend
+    envVars:
+      - key: LLM_PROVIDER
+        value: openai
+      - key: OPENAI_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: OPENAI_EMBEDDING_MODEL
+        value: text-embedding-ada-002
+      - key: OPENAI_CHAT_MODEL
+        value: gpt-4o-mini
+      - key: VECTOR_DB_PROVIDER
+        value: chromadb
+      - key: VECTOR_DB_URL
+        sync: false  # Set to ChromaDB service URL
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: GOOGLE_EMBEDDING_MODEL
+        value: models/gemini-embedding-001
+      - key: GOOGLE_CHAT_MODEL
+        value: gemini-2.0-flash
+
+  # ChromaDB Vector Database
+  - type: web
+    name: kra-kpa-chromadb
+    runtime: docker
+    dockerfilePath: ./Dockerfile.chroma
+    rootDir: backend
+    envVars:
+      - key: ANONYMIZED_TELEMETRY
+        value: "false"
