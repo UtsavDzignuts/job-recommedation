@@ -38,6 +38,8 @@ def create_vector_store(config: AIConfig | None = None) -> VectorStoreInterface:
         return ChromaDBStore(
             url=config.VECTOR_DB_URL,
             api_key=config.VECTOR_DB_API_KEY,
+            tenant=config.CHROMA_TENANT,
+            database=config.CHROMA_DATABASE,
         )
     elif provider == "pgvector":
         raise NotImplementedError(

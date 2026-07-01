@@ -23,7 +23,13 @@ class AIConfig(BaseSettings):
     """Connection URL for the vector database."""
 
     VECTOR_DB_API_KEY: Optional[str] = None
-    """Optional API key for vector database authentication."""
+    """Optional API key for vector database authentication (Chroma Cloud)."""
+
+    CHROMA_TENANT: Optional[str] = None
+    """Chroma Cloud tenant ID."""
+
+    CHROMA_DATABASE: Optional[str] = None
+    """Chroma Cloud database name."""
 
     # LLM Provider
     LLM_PROVIDER: str = "google"

@@ -17,23 +17,38 @@ logger = logging.getLogger(__name__)
 class ChromaDBStore(VectorStoreInterface):
     """Vector store implementation backed by ChromaDB.
 
-    Supports both HTTP client (for remote ChromaDB server) and
-    in-memory/persistent client for local development and testing.
+    Supports:
+    - Chroma Cloud (when api_key, tenant, and database are provided)
+    - HTTP client (for self-hosted remote ChromaDB server)
+    - In-memory/persistent client for local development and testing.
     """
 
-    def __init__(self, url: str = "http://localhost:8000", api_key: str | None = None) -> None:
+    def __init__(
+        self,
+        url: str = "http://localhost:8000",
+        api_key: str | None = None,
+        tenant: str | None = None,
+        database: str | None = None,
+    ) -> None:
         """Initialize ChromaDB client.
 
         Args:
             url: ChromaDB server URL (used for HTTP client mode).
-            api_key: Optional API key for ChromaDB authentication.
+            api_key: Optional API key for Chroma Cloud authentication.
+            tenant: Optional Chroma Cloud tenant ID.
+            database: Optional Chroma Cloud database name.
         """
         self._url = url
         self._api_key = api_key
+        self._tenant = tenant
+        self._database = database
         self._client: chromadb.ClientAPI | None = None
 
     def _get_client(self) -> chromadb.ClientAPI:
         """Lazily initialize and return the ChromaDB client.
+
+        Uses Chroma Cloud client if api_key, tenant, and database are all set.
+        Otherwise falls back to HTTP client for self-hosted instances.
 
         Returns:
             A ChromaDB client instance.
@@ -43,16 +58,26 @@ class ChromaDBStore(VectorStoreInterface):
         """
         if self._client is None:
             try:
-                parsed = urlparse(self._url)
-                host = parsed.hostname or "localhost"
-                port = parsed.port or 8000
-                self._client = chromadb.HttpClient(
-                    host=host,
-                    port=port,
-                    settings=ChromaSettings(
-                        anonymized_telemetry=False,
-                    ),
-                )
+                if self._api_key and self._tenant and self._database:
+                    # Chroma Cloud
+                    self._client = chromadb.CloudClient(
+                        tenant=self._tenant,
+                        database=self._database,
+                        api_key=self._api_key,
+                    )
+                    logger.info("Connected to Chroma Cloud (tenant=%s, database=%s)", self._tenant, self._database)
+                else:
+                    # Self-hosted HTTP client
+                    parsed = urlparse(self._url)
+                    host = parsed.hostname or "localhost"
+                    port = parsed.port or 8000
+                    self._client = chromadb.HttpClient(
+                        host=host,
+                        port=port,
+                        settings=ChromaSettings(
+                            anonymized_telemetry=False,
+                        ),
+                    )
             except Exception as e:
                 logger.error("Failed to initialize ChromaDB client: %s", str(e))
                 raise VectorDBUnavailableError(
